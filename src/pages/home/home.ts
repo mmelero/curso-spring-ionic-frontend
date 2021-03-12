@@ -7,9 +7,16 @@ import { IonicPage, NavController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  nav: any;
 
   constructor(public navCtrl: NavController) {
 
+
   }
+
+  login(){
+    this.navCtrl.setRoot('CategoriasPage');
+  }
+ 
 
 }
