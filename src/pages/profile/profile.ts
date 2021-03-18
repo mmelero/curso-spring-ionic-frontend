@@ -16,21 +16,31 @@ export class ProfilePage {
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              public stroage: StorageService,
+              public storage: StorageService,
               public clienteService: ClienteService) {
   }
 
   ionViewDidLoad() {
-    let localUser = this.stroage.getLocalUser();
+    let localUser = this.storage.getLocalUser();
     if(localUser && localUser.email){
       this.clienteService.findByEmail(localUser.email)
         .subscribe(Response =>{
           this.cliente = Response;
           this.getImageIfExists();
         },
-        error => {});
+        error => {
+          if(error.status == 403){
+            this.navCtrl.setRoot('HomePage');
+          }
+          if(error.status == 500){
+            this.navCtrl.setRoot('HomePage');
+          }
+        });
     }
-  }
+    else{
+      this.navCtrl.setRoot('HomePage');
+      }
+    }
 
   getImageIfExists(){
     this.clienteService.getImageFromBucket(this.cliente.id)
