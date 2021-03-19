@@ -11,6 +11,7 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptors';
 import { AuthService } from '../services/Auth.Service';
 import { StorageService } from '../services/storage.service';
 import { ClienteService } from '../services/domain/cliente.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,8 @@ import { ClienteService } from '../services/domain/cliente.service';
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
