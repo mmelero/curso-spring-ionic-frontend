@@ -88,6 +88,3 @@ export const ErrorInterceptorProvider = {
     multi: true,
 };
 
-function newFunction(error: any) {
-    console.log('Error: ' + error);
-}
