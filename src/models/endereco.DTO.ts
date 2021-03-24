@@ -8,4 +8,6 @@ export interface EnderecoDTO{
 	  bairro: string;
 	  cep: string;
       cidade: CidadeDTO;
+
+      
 }
