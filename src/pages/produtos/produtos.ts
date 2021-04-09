@@ -18,7 +18,6 @@ export class ProdutosPage {
   }
 
   ionViewDidLoad() {
-    console.log('categoria: '+ this.navParams.get('categoria_id'));
     let categoria_id = this.navParams.get('categoria_id');
     this.produtoservice.findByCategoria(categoria_id)
       .subscribe(Response => {

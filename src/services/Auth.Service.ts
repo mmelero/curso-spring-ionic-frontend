@@ -18,7 +18,6 @@ export class AuthService{
 
     }
     authenticate(creds: CredenciaisDTO){
-
         return this.http.post(
             `${API_CONFIG.baseUrl}/login`, 
             creds,
@@ -26,6 +25,7 @@ export class AuthService{
                 observe: 'response',
                 responseType: 'text'
             });
+
     }
 
     refreshToken(){
@@ -35,7 +35,7 @@ export class AuthService{
             {},
             {
                 observe: 'response',
-                responseType: 'text'
+                 responseType: 'text'
             });
     }
 
@@ -44,12 +44,13 @@ export class AuthService{
         let user: LocalUser = {
             token: tok,
             email: this.jwtHelper.decodeToken(tok).sub
+            
         } ;
-        this.storage.setlocalUser(user);
+        this.storage.setLocalUser(user);
         this.cartService.createorClear();
     }
 
     logout(){
-        this.storage.setlocalUser(null);
+        this.storage.setLocalUser(null);
     }
 }

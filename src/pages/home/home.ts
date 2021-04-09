@@ -31,8 +31,8 @@ export class HomePage {
 
     ionViewDidEnter(){
       this.auth.refreshToken()
-      .subscribe(Response => {
-        this.auth.successfulLogin(Response.headers.get('Authorization'));
+      .subscribe(response => {
+        this.auth.successfulLogin(response.headers.get('Authorization'));
         this.navCtrl.setRoot('CategoriasPage');
       },
       error =>{});   

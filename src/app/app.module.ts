@@ -14,6 +14,7 @@ import { ClienteService } from '../services/domain/cliente.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProdutoService } from '../services/domain/produto.service';
 import { CartService } from '../services/domain/cart.service';
+import { AuthInterceptorProvider } from '../interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { CartService } from '../services/domain/cart.service';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     CategoriaService,
+    AuthInterceptorProvider,
     ErrorInterceptorProvider,
     AuthService,
     StorageService,

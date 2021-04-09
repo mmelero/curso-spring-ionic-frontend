@@ -52,7 +52,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
 
     handle403() {
-        this.storage.setlocalUser(null);
+        this.storage.setLocalUser(null);
     }
 
     handle401() {

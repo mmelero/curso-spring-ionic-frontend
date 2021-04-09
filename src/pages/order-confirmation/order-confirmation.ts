@@ -6,6 +6,7 @@ import { EnderecoDTO } from '../../models/endereco.DTO';
 import { PedidoDTO } from '../../models/pedido.DTO';
 import { CartService } from '../../services/domain/cart.service';
 import { ClienteService } from '../../services/domain/cliente.service';
+import { PedidoService } from '../../services/domain/pedidoService';
 
 @IonicPage()
 @Component({
@@ -18,12 +19,14 @@ export class OrderConfirmationPage {
   cartItems: CartItem[];
   cliente: ClienteDTO;
   endereco: EnderecoDTO;
+  codpedido: string;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public cartService: CartService,
-    public clienteSservice: ClienteService ) {
+    public clienteService: ClienteService,
+    public pedidoService: PedidoService ) {
 
     this.pedido = this.navParams.get('pedido');
 
@@ -32,9 +35,10 @@ export class OrderConfirmationPage {
   ionViewDidLoad() {
     this.cartItems = this.cartService.getCart().items;
 
-    this.clienteSservice.findById(this.pedido.cliente.id)
+    this.clienteService.findById(this.pedido.cliente.id)
       .subscribe(Response =>{
         this.cliente =  Response as ClienteDTO;
+        //console.log(this.pedido.enderecodeEntrega);
         this.endereco = this.findEndereco(this.pedido.enderecodeEntrega.id, Response['enderecos']);
       },
       erro => {
@@ -49,6 +53,35 @@ export class OrderConfirmationPage {
 
   total(){
     return this.cartService.total();
+  }
+
+  back() {
+    this.navCtrl.setRoot('CartPage');
+  }
+
+  home() {
+    this.navCtrl.setRoot('CategoriasPage');
+  }
+
+  checkout() {
+    this.pedidoService.insert(this.pedido)
+      .subscribe(response => {
+        this.codpedido = this.extractId(response.headers.get('location'));
+        this.cartService.createorClear();
+
+      },
+      
+      error => {
+        if (error.status == 403) {
+          this.navCtrl.setRoot('HomePage');
+          
+        }
+      });
+  }
+
+  private extractId(location: string) : string{
+    let position = location.lastIndexOf('/');
+    return location.substring(position + 1, location.length);
   }
 
 }
