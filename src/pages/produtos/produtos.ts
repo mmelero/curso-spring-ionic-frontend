@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { LoadingController } from 'ionic-angular';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams} from 'ionic-angular';
 import { API_CONFIG } from '../../config/api.config';
 import { ProdutoDTO } from '../../models/produto.DTO';
 import { ProdutoService } from '../../services/domain/produto.service';
@@ -8,10 +8,12 @@ import { ProdutoService } from '../../services/domain/produto.service';
 @IonicPage()
 @Component({
   selector: 'page-produtos',
-  templateUrl: 'produtos.html',
+  templateUrl: 'produtos.html'
+
 })
 export class ProdutosPage {
-  items: ProdutoDTO[];
+  items: ProdutoDTO[] = [];
+  page: number = 0;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -26,19 +28,21 @@ export class ProdutosPage {
   loadData(){
     let categoria_id = this.navParams.get('categoria_id');
     let loader = this.presentLoading();
-    this.produtoservice.findByCategoria(categoria_id)
+    this.produtoservice.findByCategoria(categoria_id, this.page, 10)
       .subscribe(Response => {
-        this.items = Response['content'];
+        let start = this.items.length;
+        this.items = this.items.concat(Response['content']);
+        let end = this.items.length - 1;
         loader.dismiss();
-        this.loadImageUrls();
+        this.loadImageUrls(start, end);
       },
       error => {
         loader.dismiss();
       }
       );
   }
-  loadImageUrls(){
-    for(var i = 0; i < this.items.length; i++){
+  loadImageUrls(start: number, end: number){
+    for(var i = start; i <= end; i++){
       let item = this.items[i];
       this.produtoservice.getSmallimageFromBucket(item.id)
       .subscribe(Response => {
@@ -61,10 +65,21 @@ export class ProdutosPage {
   }
 
   doRefresh(refresher) {
+    this.page = 0;
+    this.items = [];
     this.loadData();
     setTimeout(() => {
       refresher.complete();
     }, 1000);
   }
+
+  doLoadData(event) {
+    this.page ++;
+    this.loadData();
+    setTimeout(() => {
+      event.complete();
+    }, 1000);
+  }
+  
 
 }
