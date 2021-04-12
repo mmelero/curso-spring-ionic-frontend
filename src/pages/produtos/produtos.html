@@ -8,6 +8,9 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-fab top right edge>
     <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>
   </ion-fab>
@@ -18,7 +21,8 @@
         <img [src] = "item.imageUrl || 'assets/imgs/prod.jpg'">
         <!-- <img src="{{bucketUrl}}/cat{{item.id}}.jpg" > -->
       </ion-thumbnail>
-      <h2> {{ item.nome }} </h2>
+      <h2>{{item.nome}}</h2>
+      <p>{{item.preco | currency}}</p>
     </button>
   </ion-list>
 </ion-content>

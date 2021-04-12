@@ -84,4 +84,6 @@ export class OrderConfirmationPage {
     return location.substring(position + 1, location.length);
   }
 
+  
+
 }
